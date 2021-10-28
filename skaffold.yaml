@@ -1,13 +1,22 @@
 # To learn more about the skaffold.yaml schema visit
 # https://skaffold.dev/docs/references/yaml/
-apiVersion: skaffold/v2beta4
+apiVersion: skaffold/v2beta22
 kind: Config
 build:
   tagPolicy:
     sha256: {}
+  cluster:
+    namespace: default
   artifacts:
   - context: .
-    image: go-hello-world
+    image: registry.example.com/go-hello-world
+    kaniko:
+      initImage: arm64v8/busybox:musl  # default busybox image used is only amd64
+      image: gcr.io/kaniko-project/executor:v1.6.0  # `latest` version of the image is not multi-arch
+      insecure: true
+      insecurePull: true
+      insecureRegistry:
+        - registry.example.com
 deploy:
   kubectl:
     manifests:
