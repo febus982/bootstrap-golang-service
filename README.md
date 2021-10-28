@@ -1,4 +1,13 @@
-# Kubernetes Hello World with Cloud Code
+# Kubernetes Hello World with Cloud Code and Kaniko
+
+This is an example of a working golang project using kaniko for in-cluster image building,
+to allow easy cross-compilation on an ARM64 kubernetes cluster.
+
+You need to have your `kubectl` configured and `skaffold` installed.
+
+Refer to [https://skaffold.dev/docs/install/](https://skaffold.dev/docs/install/)
+
+## The application
 
 "Hello World" is a Kubernetes application that contains a single
 [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) and a corresponding
@@ -8,6 +17,7 @@ For details on how to use this sample as a template in Cloud Code, read the docu
 
 ### Table of Contents
 * [What's in this sample](#whats-in-this-sample)
+* [Before Getting Started](#getting-started-with-vs-code)
 * [Getting Started with VS Code](#getting-started-with-vs-code)
 * [Getting Started with IntelliJ](#getting-started-with-intellij)
 * [Sign up for User Research](#sign-up-for-user-research)
@@ -26,6 +36,26 @@ For details on how to use this sample as a template in Cloud Code, read the docu
   - `hello.service.yaml` - creates a load balancer and exposes the 'go-hello-world' service on an external IP in the cluster
 
 ---
+## Before Getting Started
+
+To be able to use the in-cluster build pipeline using Kaniko you need an external registry to hold the image.
+
+It is possible to self-host a registry in the same cluster you use to build and run the application
+but it must be accessible from your development environment (e.g. via a service of type `LoadBalancer` or `NodePort`).
+
+Make sure to replace all occurrences of `registry.example.com` in `skaffold.yaml` and
+`kubernetes-manifests/hello.deployment.yaml` with the registry IP address and port (or the hostname).
+
+At this point you can go to:
+* [Getting Started with VS Code](#getting-started-with-vs-code)
+* [Getting Started with IntelliJ](#getting-started-with-intellij)
+
+Or you can simply run:
+
+```shell
+skaffold dev --port-forward=true
+```
+
 ## Getting Started with VS Code
 
 ### Run the app locally with minikube
